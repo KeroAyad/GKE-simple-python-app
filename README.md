@@ -1,0 +1,141 @@
+# Deploy Python app on GKE
+
+## Tools used
+
+- ### Docker
+- ### Terraform
+- ### Google Cloud Platform
+- ### Kubernetes
+
+## Create and Push Docker Image
+
+### clone app repository
+>$ git clone https:github.com/atefhares/DevOps-Challenge-Demo-Code
+
+### create dockerfile
+>$ vim Dockerfile
+```
+FROM python:3.9.10
+
+RUN apt update 
+
+WORKDIR /app
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+COPY . .
+ENTRYPOINT python hello.py
+
+```
+<br>
+
+### build image form dockerfile
+>$ docker build -t python-app:latest .
+<br>
+
+### run redis server
+>$ docker run --name redis-db -d -p 6379:6379 redis redis-server --save 60 1 --loglevel warning
+
+<br>
+
+### test docker image
+>$ docker run --env-file .env -p 8000:8000 --name python-app python-app
+
+<br>
+
+### create a repository on google artifact registry
+>$ gcloud services enable artifactregistry.googleapis.com
+
+>$ gcloud artifacts repositories create gcp-gke-apps --repository-format=Docker --location=us-central1
+
+![img](screenshots/Screenshot%20from%202022-10-30%2021-24-43.png)
+
+<br>
+
+### change tags to match the artifact repository 
+>$ docker tag python-app:latest us-central1-docker.pkg.dev/ancient-jigsaw-366112/gcp-gke-apps/python-app:latest
+
+>$ docker tag redis-db us-central1-docker.pkg.dev/ancient-jigsaw-366112/gcp-gke-apps/my-redis-db
+
+<br>
+
+### push images to artifact repository
+
+>$ docker push us-central1-docker.pkg.dev/ancient-jigsaw-366112/gcp-gke-apps/python-app:latest
+
+>$ docker push us-central1-docker.pkg.dev/ancient-jigsaw-366112/gcp-gke-apps/my-redis-db
+
+![img](screenshots/Screenshot%20from%202022-10-30%2021-27-18.png)
+
+<br>
+<br>
+
+## Now for the Terraform part
+
+### enable storage buckets API
+for terraform to use your credientials for API calls
+>$ gcloud auth application-default login
+
+enable storage API
+>$ gcloud services enable storage.googleapis.com
+
+### Create storge bucket for terraform backend
+
+./state-storge-bucket/main.tf
+
+```
+provider "google" {
+  project = "ancient-jigsaw-366112"
+  region     = "us-central1"
+}
+
+resource "random_id" "bucket_prefix" {
+  byte_length = 8
+}
+
+resource "google_storage_bucket" "state-storge-bucket" {
+  name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
+  force_destroy = false
+  location      = "US"
+  storage_class = "STANDARD"
+  versioning {
+    enabled = true
+  }
+}
+```
+
+>$ terraform init
+
+>$ terraform apply
+
+![](screenshots/Screenshot%20from%202022-10-30%2022-13-39.png)
+
+### Create terraform project
+make new directory for the terraform project
+
+
+[./terraform](terraform)
+
+to store the terraform state file in our backend storge bucket
+
+[./terraform/backend.t](terraform/backend.tf)
+
+```
+terraform {
+ backend "gcs" {
+   bucket  = "ca722bb262a23d93-bucket-tfstate" # storge bucket id
+   prefix  = "terraform/state"
+ }
+}
+```
+
+>$ terraform init
+
+### copy files in [./terraform](terraform)
+Here we created:
+- Service account
+- VPC
+- 2 Subnets
+- private VM
+- NAT Gateway
+
+>$ terraform apply --var-file prod.tfvars
