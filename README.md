@@ -133,3 +133,16 @@ terraform {
 ### copy files in [./terraform](terraform)
 
 >$ terraform apply --var-file prod.tfvars
+
+### results:
+- vpc
+- subnets
+  ![](screenshots/subnets.png)
+- router
+  ![](screenshots/routers.png)
+- nat-gateway
+  ![](screenshots/nat-gateway.png)
+- instance
+  ![](screenshots/VM.png)
+- firewall
+  ![](screenshots/firewall.png)
