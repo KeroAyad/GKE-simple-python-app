@@ -131,11 +131,5 @@ terraform {
 >$ terraform init
 
 ### copy files in [./terraform](terraform)
-Here we created:
-- Service account
-- VPC
-- 2 Subnets
-- private VM
-- NAT Gateway
 
 >$ terraform apply --var-file prod.tfvars
