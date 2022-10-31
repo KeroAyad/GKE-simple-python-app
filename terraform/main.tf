@@ -37,13 +37,13 @@ resource "google_container_node_pool" "gke-nodes" {
     preemptible  = false
     machine_type = "e2-micro"
     tags         = ["gke-node"]
-    metadata = {
-      disable-legacy-endpoints = "true"
-
+    # metadata = {
+    #   disable-legacy-endpoints = "true"
+    # }
     service_account = google_service_account.gke-sa.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
-    }
+    
   }
 }
