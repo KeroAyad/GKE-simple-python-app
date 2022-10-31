@@ -171,15 +171,16 @@ terraform {
 ![](screenshots/kubctl.png)
 
 ### connect to cluster
-Install the gke-gcloud-auth-plugin binary:
+Install the gke-gcloud-auth-plugin
 >$ sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+
 Now connect kubectl to the cluster
 
 >$ gcloud container clusters get-credentials gke-cluster --region us-central1 --project ancient-jigsaw-366112
 
 ![](screenshots/connect-cluster.png)
 
-test kubectl
+Test kubectl
 
 >$ kubectl get nodes
 
