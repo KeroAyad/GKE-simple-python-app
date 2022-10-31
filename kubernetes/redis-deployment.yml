@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: redis
+  template:
+    metadata:
+      labels:
+        type: redis
+    spec:
+      containers:
+      - name: redis
+        image: us-central1-docker.pkg.dev/ancient-jigsaw-366112/gcp-gke-apps/my-redis-db
+        ports:
+        - containerPort: 6379
