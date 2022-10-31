@@ -2,6 +2,10 @@ variable "region" {
   type = string
 }
 
+variable "vm-zone" {
+  type = string
+}
+
 variable "project_id" {
   type = string
 }
