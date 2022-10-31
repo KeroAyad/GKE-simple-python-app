@@ -117,7 +117,7 @@ make new directory for the terraform project
 
 to store the terraform state file in our backend storge bucket
 
-[./terraform/backend.t](terraform/backend.tf)
+[./terraform/backend.tf](terraform/backend.tf)
 
 ```
 terraform {
@@ -146,3 +146,42 @@ terraform {
   ![](screenshots/VM.png)
 - firewall
   ![](screenshots/firewall.png)
+- google_container_cluster
+  ![](screenshots/cluster.png)
+- container_node_pool
+  ![](screenshots/nood-pool.png)
+
+## Connect to cluster
+
+### ssh to private VM
+
+>$ gcloud compute ssh --zone "us-central1-a" "management-vm"  --tunnel-through-iap --project "ancient-jigsaw-366112"
+
+![](screenshots/ssh-vm.png)
+
+### login
+>$ gcloud auth login
+### install kubctl
+>$ apt-get update
+
+>$ apt-get install -y kubectl
+
+>$ kubectl version --short --client
+
+![](screenshots/kubctl.png)
+
+### connect to cluster
+Install the gke-gcloud-auth-plugin binary:
+>$ sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+Now connect kubectl to the cluster
+
+>$ gcloud container clusters get-credentials gke-cluster --region us-central1 --project ancient-jigsaw-366112
+
+![](screenshots/connect-cluster.png)
+
+test kubectl
+
+>$ kubectl get nodes
+
+![](screenshots/get-nodes.png)
+
