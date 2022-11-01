@@ -17,3 +17,7 @@ variable "management-subnet-cidr" {
 variable "restricted-subnet-cidr" {
   type = string
 }
+
+variable "ar-repo" {
+  type = string
+}

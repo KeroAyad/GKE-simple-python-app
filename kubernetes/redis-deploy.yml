@@ -17,3 +17,4 @@ spec:
         image: us-central1-docker.pkg.dev/ancient-jigsaw-366112/gcp-gke-apps/my-redis-db
         ports:
         - containerPort: 6379
+        

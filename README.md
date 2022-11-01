@@ -39,6 +39,7 @@ ENTRYPOINT python hello.py
 
 ### test docker image
 >$ docker run --env-file .env -p 8000:8000 --name python-app python-app
+![](screenshots/docker-test.png)
 
 <br>
 
@@ -186,3 +187,32 @@ Test kubectl
 
 ![](screenshots/get-nodes.png)
 
+## Finally for the Kubernetes part
+
+### Create redis deployment and service
+### copy files in [./kubernetes](kubernetes)
+### Create deployment and service for redis
+deploy redis server
+>$ kubectl apply -f redis-deploy.yml
+
+create a ClusterIP service for redis pods 
+>$ kubctl apply -f redis-svc.yml 
+
+![](screenshots/get-svc.png)
+
+### create deployment and service for the app
+deploy the app
+>$ kubectl apply -f app-deploy.yml
+
+create a LoadBalancer service for the app pods 
+>$ kubctl apply -f app-svc.yml 
+
+![](screenshots/ld-svc.png)
+
+### Get the external ip of the LoadBalancer
+
+![](screenshots/prod.png)
+
+Congrats! 
+
+![](screenshots/giphy.gif)

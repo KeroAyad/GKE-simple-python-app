@@ -42,7 +42,7 @@ resource "google_compute_subnetwork" "restricted-subnet" {
   ip_cidr_range = var.restricted-subnet-cidr
   region        = var.region
   network       = google_compute_network.gke-vpc-network.id
-  # private_ip_google_access = true
+  private_ip_google_access = true
 }
 
 
