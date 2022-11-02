@@ -7,6 +7,10 @@
 - ### Google Cloud Platform
 - ### Kubernetes
 
+## Here's my Infrastructure Diagram
+
+![](screenshots/Kerolos-GCP-Digram.drawio.png)
+
 ## Create and Push Docker Image
 
 ### clone app repository
@@ -39,6 +43,7 @@ ENTRYPOINT python hello.py
 
 ### test docker image
 >$ docker run --env-file .env -p 8000:8000 --name python-app python-app
+
 ![](screenshots/docker-test.png)
 
 <br>
@@ -166,12 +171,6 @@ terraform {
 Install the gke-gcloud-auth-plugin
 >$ sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
 
-Now connect kubectl to the cluster
-
->$ gcloud container clusters get-credentials gke-cluster --region us-central1 --project ancient-jigsaw-366112
-
-![](screenshots/connect-cluster.png)
-
 ### install kubctl
 >$ apt-get update
 
@@ -180,6 +179,13 @@ Now connect kubectl to the cluster
 >$ kubectl version --short --client
 
 ![](screenshots/kubctl.png)
+
+Now connect kubectl to the cluster
+
+>$ gcloud container clusters get-credentials gke-cluster --region us-central1 --project ancient-jigsaw-366112
+
+![](screenshots/connect-cluster.png)
+
 
 Test kubectl
 
